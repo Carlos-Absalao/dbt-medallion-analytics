@@ -1,0 +1,12 @@
+medallion_analytics:
+  target: dev
+  outputs:
+    dev:            # roda local, sem servidor
+      type: duckdb
+      path: medallion.duckdb
+    bigquery:       # mesmo projeto em produção
+      type: bigquery
+      method: oauth
+      project: "{{ env_var('GCP_PROJECT', 'seu-projeto') }}"
+      dataset: analytics
+      location: southamerica-east1

@@ -1,0 +1,23 @@
+name: medallion_analytics
+version: "1.0.0"
+config-version: 2
+profile: medallion_analytics
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+
+models:
+  medallion_analytics:
+    staging:
+      +materialized: view
+      +schema: processed
+    intermediate:
+      +materialized: view
+      +schema: trusted
+    marts:
+      +materialized: table
+      +schema: gold
+seeds:
+  medallion_analytics:
+    +schema: raw
