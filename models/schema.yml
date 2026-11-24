@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  - name: stg_empenhos
+    description: Empenhos tipados e padronizados (camada processed).
+    columns:
+      - name: id_empenho
+        tests: [unique, not_null]
+      - name: situacao
+        tests:
+          - accepted_values:
+              arguments:
+                values: ["EMITIDO", "ANULADO"]
+
+  - name: stg_pagamentos
+    columns:
+      - name: id_pagamento
+        tests: [unique, not_null]
+      - name: id_empenho
+        tests:
+          - relationships:
+              arguments:
+                to: ref('stg_empenhos')
+                field: id_empenho
+
+  - name: int_execucao_empenho
+    description: Empenhos válidos com valor pago e saldo (camada trusted).
+    columns:
+      - name: id_empenho
+        tests: [unique, not_null]
+
+  - name: fct_execucao_orcamentaria
+    description: Execução orçamentária mensal por órgão e elemento de despesa (gold).
+
+  - name: dim_fornecedor
+    description: Visão consolidada por fornecedor (gold).
+    columns:
+      - name: fornecedor
+        tests: [unique, not_null]
